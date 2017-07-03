@@ -26,10 +26,11 @@ namespace Practice7
 
         class Node
         {
-            Node L;         //Левая вершина
-            Node R;         //Правая вершина
-            int Index;      //Индекс в массиве, если вершина конечная
-            int Sum;        //Сумма частот левой и правой вершины
+            public Node L;         //Левая вершина
+            public Node R;         //Правая вершина
+            public Node Root;      //Вершина "отец"
+            public int Index;      //Индекс в массиве, если вершина конечная
+            public int Sum;        //Сумма частот левой и правой вершины
             public Node()
             {
                 L = null;
@@ -41,6 +42,8 @@ namespace Practice7
             {
                 L = l;
                 R = r;
+                l.Root = this;
+                r.Root = this;
                 Index = -1;
                 Sum = l.Sum + r.Sum;
             }
@@ -51,8 +54,47 @@ namespace Practice7
                 Index = index;
                 Sum = sum;
             }
+
+            static public implicit operator int(Node node)
+            {
+                return node.Sum;
+            }
+        }
+        static void MyShellSort(ref Node[] arr)
+        {
+            int i = 0;
+            int j = 0;
+            Node swap = new Node(-1, -1);
+
+            for (int distance = arr.Length / 2; distance > 0; distance /= 2)    //Задаём шаг
+                for (i = distance; i < arr.Length; i++)                         //Задаём группу для сортировки вставками:
+                {
+                    swap = arr[i];                                              //Сортировка встаавками
+                    for (j = i; j >= distance; j -= distance)
+                    {
+                        if (swap < arr[j - distance])
+                            arr[j] = arr[j - distance];
+                        else
+                            break;
+                    }
+                    arr[j] = swap;
+                }
         }
 
+        static public Node HaffTree(int[] words)
+        {
+            Node head;
+
+            Node[] nodes = new Node[words.Length];
+
+            for (int i = 0; i < nodes.Length; i++)
+                nodes[i] = new Node(i, words[i]);
+
+            MyShellSort(ref nodes);
+
+
+            return head;
+        }
         static void Main(string[] args)
         {
             Console.WriteLine("Введите число символов исходного алфавита");
