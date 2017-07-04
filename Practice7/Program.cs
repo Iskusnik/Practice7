@@ -24,7 +24,7 @@ namespace Practice7
         /// <param name="args"></param>
         /// 
 
-        class Node
+        public class Node
         {
             public Node L;         //Левая вершина
             public Node R;         //Правая вершина
@@ -86,12 +86,40 @@ namespace Practice7
             Node head;
 
             Node[] nodes = new Node[words.Length];
+            
 
             for (int i = 0; i < nodes.Length; i++)
                 nodes[i] = new Node(i, words[i]);
+            while (nodes.Length != 1)
+            {
+                int l = 0, r = 1;
 
-            MyShellSort(ref nodes);
+                for (int i = 0; i < nodes.Length; i++)
+                    if (nodes[l] <= nodes[i] && r != l && l != i)
+                        l = i;
 
+                for (int i = 0; i < nodes.Length; i++)
+                    if (nodes[r] <= nodes[i] && r != l && r != i)
+                        r = i;
+            
+                Node[] temp = new Node[words.Length - 1];
+
+
+                for (int j = 0, i = 0; i < temp.Length - 1; i++)
+                {
+
+                    if (j == l || j == r)
+                        j++;
+                    temp[i] = nodes[j];
+                    j++;
+                }
+                temp[temp.Length] = new Node(nodes[l], nodes[r]);
+
+
+
+                nodes = temp;
+            }
+            head = nodes[0];
 
             return head;
         }
