@@ -151,24 +151,27 @@ namespace Practice7
             while (head != 0)
             {
 
-                if (mark.L != 0)
+                if (mark.L != null && mark.L != 0)
                 {
                     mark = mark.L;
                     wordLength++;
                 }
                 else
-                    if (mark.R != 0)
+                    if (mark.R != null && mark.R != 0)
                 {
                     mark = mark.R;
                     wordLength++;
                 }
                 else
                 {
-                    mark = mark.Root;
+                    if (mark.Root != null)
+                    {
+                        mark = mark.Root;
+                    }
                     wordLength--;
                 }
 
-                if (mark.Index != -1)
+                if (mark != null && mark.Index != -1)
                 {
                     //Убираем найденное слово из дерева
 
@@ -203,6 +206,13 @@ namespace Practice7
         {
             Console.WriteLine("Введите число символов исходного алфавита");
             int N = int.Parse(Console.ReadLine());
+            while (N <= 2)
+            {
+                Console.WriteLine("Кодирование не имеет смысла. Используйте больше двух символов в исходном алфавите");
+                Console.WriteLine("Введите число символов исходного алфавита");
+                N = int.Parse(Console.ReadLine());
+            }
+
             int[] words = new int[N];
             for (int i = 0; i < N; i++)
             {
